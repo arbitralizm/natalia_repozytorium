@@ -1,0 +1,39 @@
+kopiowanie tabeli ----> CREATE TABLE kopia_tabeli LIKE tabela;
+kopiowanie danych ----> INSERT INTO tabela_2 SELECT*FROM tabela_1;
+
+lab 4.
+
+zad.1.
+1. DELETE FROM postac2 WHERE funkcja='majtek' AND nazwa<>'Bjorn' ORDER BY data_ur ASC LIMIT 2;
+2. ALTER TABLE postac2 DROP PRIMARY KEY, CHANGE id_postaci id_postaci int;
+
+zad.2.
+1. ALTER TABLE postac2 ADD COLUMN pesel bigint(11);
+   UPDATE postac2 SET pesel='' WHERE nazwa='';
+2. ALTER TABLE postac2 MODIFY rodzaj enum('wiking','ptak','kobieta','syrena');
+3. INSERT INTO postac2(nazwa,rodzaj,data_ur,wiek,funkcja,statek,pesel) VALUES('Gertruda_Nieszczera','syrena','2000-05-29',800,'wiedzma','Obsydian','00252309447');
+
+zad.3.
+1. UPDATE postac2 SET statek='Obsydian' WHERE nazwa='Tesciowa';
+   UPDATE postac2 SET statek='Obsydian' WHERE nazwa='Valthor';
+2. UPDATE statek SET max_ladownosc='max_ladownosc*0.7' WHERE data_wodowania BETWEEN '1901-01-01' AND '2000-12-31';
+3.  ALTER TABLE postac2 ADD CHECK(wiek<1001); 
+
+zad.4.
+1. ALTER TABLE postac2 MODIFY rodzaj enum('wiking','ptak','kobieta','syrena','waz');
+   INSERT INTO postac2(nazwa,rodzaj,data_ur,wiek,funkcja,pesel) VALUES('Loko','waz','2000-05-29',300,'waz','00332309447');
+2. CREATE TABLE marynarz SELECT*FROM postac2;
+
+
+zad.5.
+1. UPDATE marynarz2 SET statek='0';
+2. DELETE FROM marynarz2 WHERE funkcja='strateg';
+3. DELETE FROM statek WHERE nazwa_statku='Obsydian';
+   DELETE FROM statek WHERE nazwa_statku='Xander';
+4. DROP TABLE statek;
+5. CREATE TABLE zwierz(id_zwierza int(6) PRIMARY KEY AUTO_INCREMENT, nazwa VARCHAR(50), wiek int(30) UNSIGNED);
+6. INSERT INTO zwierz SELECT*FROM postac2 WHERE rodzaj='waz';
+   INSERT INTO zwierz SELECT*FROM postac2 WHERE rodzaj='ptak';
+   INSERT INTO zwierz SELECT*FROM postac2 WHERE rodzaj='syrena';
+
+
