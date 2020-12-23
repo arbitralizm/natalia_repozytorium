@@ -1,0 +1,82 @@
+
+	lab 8
+
+	zad 1
+
+DELIMITER //
+CREATE TRIGGER kreatura_before_insert
+BEFORE INSERT ON kreatura
+FOR EACH ROW
+BEGIN
+IF NEW.waga < 0
+THEN
+SET NEW.waga = 0;
+END IF;
+END
+//
+DELIMITER ;
+
+	zad 2
+
+CREATE TABLE  archiwum_wypraw(id_wyprawy int AUTO_INCREMENT PRIMARY KEY, nazwa varchar(255), data_rozpoczecia DATE, data_zakonczenia DATE, kierownik varchar(255));
+create table wyprawa select *from wikingowie.wyprawa;
+DELIMITER $$
+CREATE TRIGGER uczestnicy_after_delete_wyprawa1
+BEFORE DELETE ON wyprawa
+FOR EACH ROW
+BEGIN
+INSERT INTO archiwum_wypraw(nazwa, data_rozpoczecia, data_zakonczenia,kierownik VALUES (OLD.nazwa, OLD.data_rozpoczecia, OLD.data_zakonczenia, (SELECT nazwa as kierowniczek from kreatura where kreatura.idKreatury=OLD.kierownik));
+END
+$$
+DELIMITER ;
+
+	zad 3
+
+1.
+DELIMITER $$
+create procedure eliksir_sily(in udzwig int)
+begin
+update kreatura set udzwig = 1.2 * udzwig where id_kreatury = udzwig;
+end
+$$
+DELIMITER ;
+
+
+2.
+DELIMITER //
+CREATE FUNCTION wielkie_litery(text varchar(100))
+RETURNS varchar(100)
+BEGIN
+DECLARE caps varchar(100);
+SELECT UCASE(text) INTO caps;
+RETURN caps;
+END //
+DELIMITER ;
+
+	zad 4
+
+1.
+DELIMITER $$
+CREATE TRIGGER uczestnicy_after_insert
+AFTER INSERT ON uczestnicy
+FOR EACH ROW
+BEGIN
+IF ( SELECT id_uczestnika=14 from uczestnicy where id_wyprawy=NEW.id_wyprawy) AND
+(SELECT sektor=7 FROM etapy_wyprawy WHERE idWyprawy=NEW.id_wyprawy)
+THEN
+INSERT INTO system_alarmowy VALUES(default,'Tesciowa nadchodzi');
+END IF;
+END
+$$
+DELIMITER ;
+
+	zad 5
+1.
+DELIMITER $$
+CREATE PROCEDURE srednia_suma_maks(OUT sr float, OUT suma float, OUT maks float)
+BEGIN
+select avg(udzwig), SUM(udzwig), MAX(udzwig) into sr, suma, maks from kreatura;
+END
+$$
+DELIMITER ;
+

@@ -1,0 +1,31 @@
+
+	lab 6
+	
+	zad.1.
+	1. SELECT AVG(ilosc) FROM zasob;
+	   SELECT rodzaj, avg(waga) from kreatura where rodzaj='wiking';
+	2. SELECT rodzaj, count(*), avg(waga) from kreatura group by rodzaj;
+	3. SELECT nazwa, 2020-year(dataUr) from kreatura;
+	
+	zad.2.
+	1. SELECT idZasobu, sum(ilosc) from ekwipunek group by idZasobu;
+	2. SELECT AVG(waga) AS srednia_waga,nazwa FROM zasob WHERE ilosc>=4 GROUP BY nazwa HAVING AVG(waga)>10;
+	
+	zad.3.
+ 	1. select k.nazwa , e.ilosc from kreatura k , ekwipunek e where k.idkreatury=e.idkreatury;
+
+	2. select * from kreatura k, ekwipunek e, zasob z where k.idKreatury=e.idKreatury and e.idZasobu=z.idZasobu;
+
+  	3. select k.nazwa, k.idKreatury, e.idKreatury from kreatura k left join ekwipunek e on k.idKreatury=e.idKreatury where e.idKreatury is null order by k.nazwa;
+	
+	zad.4.
+	1. SELECT kreatura.nazwa, kreatura.dataUr, zasob.nazwa FROM kreatura NATURAL JOIN ekwipunek INNER JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE YEAR(kreatura.dataUr) BETWEEN 1670 AND 1679;
+        2. SELECT kreatura.nazwa, zasob.rodzaj FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury INNER JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE zasob.rodzaj='jedzenie' ORDER BY YEAR(kreatura.dataUr) DESC LIMIT 5;
+	   SELECT kreatura.nazwa FROM kreatura, ekwipunek, zasob WHERE kreatura.idKreatury=ekwipunek.idKreatury AND ekwipunek.idZasobu=zasob.idZasobu AND zasob.rodzaj='jedzenie' ORDER BY YEAR(dataUr) DESC LIMIT 5;
+	3. 
+	
+	zad.5.
+	1. SELECT k.rodzaj, e.ilosc, z.waga, e.ilosc*z.waga from kreatura k, ekwipunek e, zasob z where k.idKreatury=e.idKreatury and e.idZasobu=z.idZasobu order by k.rodzaj;
+       SELECT k.rodzaj, sum(e.ilosc) e.ilosc*z.waga from kreatura k, ekwipunek e, zasob z where k.idKreatury=e.idKreatury and e.idZasobu=z.idZasobu order by k.rodzaj;
+	2. select rodzaj, max(dataUr), min(dataUr) as 'max', min(dataUr) as 'min' from kreatura group by rodzaj  
+
